@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4 mb-3">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">Student Profile</h3>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ url_for('static', filename=image_path) }}"
+                         alt="{{ student.name }}" class="img-fluid rounded-circle mb-3 shadow" style="max-width: 200px;">
+
+                    <h4 class="card-title">{{ student.name }}</h4>
+                    <p class="text-muted">{{ student.reg_number }}</p>
+
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <strong>Major</strong>
+                            <p class="text-muted">{{ student.major }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Registration Date</strong>
+                            <p class="text-muted">{{ student.registration_date }}</p>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>Attendance count</strong>
+                            <p>
+                                <span class="badge bg-primary">
+                                    {{ student.total_attendance or '0' }}
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <strong>Last Attendance</strong>
+                            <p class="text-muted">{{ student.last_attendance }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('student') }}" class="btn btn-secondary">Back to Students</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

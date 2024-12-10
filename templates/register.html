@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-sm-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient-primary text-white py-4">
+                    <div class="text-center">
+                        <h3 class="fw-bold my-0">
+                            <i class="fas fa-user-plus me-2"></i>Student Registration
+                        </h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form action="{{ url_for('register') }}" method="POST" enctype="multipart/form-data">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">
+                                    <i class="fas fa-user me-2 text-primary"></i>Full Name
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-id-card"></i></span>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter full name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="reg_number" class="form-label">
+                                    <i class="fas fa-hashtag me-2 text-primary"></i>Registration Number
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-barcode"></i></span>
+                                    <input type="text" class="form-control" id="reg_number" name="reg_number" placeholder="Enter registration number" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="major" class="form-label">
+                                    <i class="fas fa-graduation-cap me-2 text-primary"></i>Major
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fas fa-book"></i></span>
+                                    <select class="form-select" id="major" name="major" required>
+                                        <option value="">Select Major</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Data Science">Data Science</option>
+                                        <option value="Cybersecurity">Cybersecurity</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="image" class="form-label">
+                                    <i class="fas fa-camera me-2 text-primary"></i>Student Photo
+                                </label>
+                                <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                                <small class="text-muted">Max file size: 5MB</small>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                    <button type="submit" class="btn btn-primary me-md-2">
+                                        <i class="fas fa-save me-2"></i>Register Student
+                                    </button>
+                                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                                        <i class="fas fa-times me-2"></i>Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_css %}
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(to right, #3498db, #2980b9);
+    }
+
+    .input-group-text {
+        background-color: #f8f9fa;
+        border-color: #ced4da;
+    }
+
+    .form-label i {
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}
+{% endblock %}

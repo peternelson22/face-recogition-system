@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid vh-100 d-flex py-4">
+    <div class="row w-100 g-4">
+        <div class="col-lg-8">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header bg-white border-0 pb-0">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <h3 id="person-name" class="mb-1">Unknown</h3>
+                            <p id="person-details" class="text-muted mb-0">No person detected</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="ratio ratio-16x9 bg-light rounded">
+                        <img id="video-feed" src="/video_feed" alt="Live Video Feed" class="img-fluid object-fit-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card h-100 shadow-sm card-hover">
+                <div class="card-body text-center">
+                    <div id="status-icon" class="mb-3">
+                        <i class="fas fa-circle text-danger fs-1"></i>
+                    </div>
+                    <h2 class="card-title mb-3">Attendance Status</h2>
+                    <p id="status-text" class="h4 text-danger mb-4">Inactive</p>
+
+                    <div id="detailed-info" class="bg-light rounded p-3 mb-3" style="display: none;">
+                        <div class="row mb-2 pb-2 border-bottom">
+                            <div class="col-6 text-muted">Registration Number</div>
+                            <div id="reg-number" class="col-6 text-end fw-bold">N/A</div>
+                        </div>
+                        <div class="row mb-2 pb-2 border-bottom">
+                            <div class="col-6 text-muted">Major</div>
+                            <div id="major" class="col-6 text-end fw-bold">N/A</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 text-muted">Last Attendance</div>
+                            <div id="last-attendance" class="col-6 text-end fw-bold">Never</div>
+                        </div>
+                    </div>
+
+                    <div id="attendance-message" class="alert" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateStatus() {
+        fetch('/status')
+            .then(response => response.json())
+            .then(data => {
+                const statusText = document.getElementById('status-text');
+                const statusIcon = document.getElementById('status-icon');
+                const personName = document.getElementById('person-name');
+                const personDetails = document.getElementById('person-details');
+                const detailedInfo = document.getElementById('detailed-info');
+                const attendanceMessage = document.getElementById('attendance-message');
+
+                // Detailed info elements
+                const regNumber = document.getElementById('reg-number');
+                const major = document.getElementById('major');
+                const lastAttendance = document.getElementById('last-attendance');
+
+                if (data.user.status !== 'Inactive') {
+                    // Determine message and styling based on status
+                    let messageClass = '';
+                    let iconClass = '';
+
+                    if (data.user.status === 'Active') {
+                        messageClass = 'alert-success';
+                        iconClass = 'text-success';
+                        statusText.textContent = 'Active';
+                        statusIcon.innerHTML = `<i class="fas fa-check-circle ${iconClass} fs-1"></i>`;
+                    } else if (data.user.status === 'Restricted') {
+                        messageClass = 'alert-warning';
+                        iconClass = 'text-warning';
+                        statusText.textContent = 'Restricted';
+                        statusIcon.innerHTML = `<i class="fas fa-exclamation-circle ${iconClass} fs-1"></i>`;
+                    } else {
+                        messageClass = 'alert-danger';
+                        iconClass = 'text-danger';
+                        statusText.textContent = 'Unregistered';
+                        statusIcon.innerHTML = `<i class="fas fa-times-circle ${iconClass} fs-1"></i>`;
+                    }
+
+                    // Update user details
+                    personName.textContent = data.user.name;
+                    personDetails.textContent = `Detected: ${data.user.name}`;
+
+                    // Populate detailed information
+                    regNumber.textContent = data.user.id;
+                    major.textContent = data.user.major;
+                    lastAttendance.textContent = data.user.last_attendance;
+
+                    // Show attendance message
+                    attendanceMessage.textContent = data.user.attendance_message;
+                    attendanceMessage.className = `alert ${messageClass}`;
+                    attendanceMessage.style.display = 'block';
+
+                    // Show detailed info
+                    detailedInfo.style.display = 'block';
+                } else {
+                    // Inactive status styling
+                    statusText.textContent = 'Inactive';
+                    statusIcon.innerHTML = '<i class="fas fa-circle text-danger fs-1"></i>';
+                    personName.textContent = 'Unknown';
+                    personDetails.textContent = 'No person detected';
+
+                    // Hide detailed info and message
+                    detailedInfo.style.display = 'none';
+                    attendanceMessage.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching status:', error);
+            });
+    }
+
+    // Update status every 2 seconds
+    setInterval(updateStatus, 2000);
+</script>
+{% endblock %}
