@@ -1,9 +1,9 @@
 import os
 import face_recognition
 import json
+import humanize
 from datetime import datetime
 from redis_connection import RedisConnectionManager
-from utils import get_relative_time
 
 redis = RedisConnectionManager()
 
@@ -62,6 +62,8 @@ class StudentRegistrationSystem:
             # Store image in a specific directory with reg_number as filename
             filename = os.path.join(redis.images_path, f"{reg_number}{os.path.splitext(image_path)[1]}")
             os.rename(image_path, filename)
+
+            self.redis_client.publish("data_update", "refresh")
 
             print(f"Student {name} registered successfully.")
             return True
@@ -161,9 +163,12 @@ class StudentRegistrationSystem:
                 student_data = self.redis_client.hgetall(key)
 
                 last_attendance_str = student_data.get('last_attendance')
-                relative_attendance_time = get_relative_time(last_attendance_str)
+                try:
+                    last_attendance_time = datetime.fromisoformat(last_attendance_str)
+                    relative_attendance_time = humanize.naturaltime(last_attendance_time)
+                except (ValueError, TypeError):
+                    relative_attendance_time = 'Never'
 
-                print(relative_attendance_time)
                 # Convert byte strings to regular strings
                 student = {
                     "reg_number": reg_number,
@@ -172,7 +177,6 @@ class StudentRegistrationSystem:
                 }
 
                 students.append(student)
-
             return students
 
         except Exception as e:

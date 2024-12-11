@@ -104,19 +104,3 @@ class RedisConnectionManager:
             bool: True if connected, False otherwise
         """
         return self.redis_client is not None
-
-# Example usage in other files
-# from redis_connection import RedisConnectionManager
-#
-# class SomeClass:
-#     def __init__(self):
-#         # Get the singleton Redis connection manager
-#         redis_manager = RedisConnectionManager()
-#
-#         # Get the Redis client
-#         self.redis_client = redis_manager.get_redis_client()
-#
-#         # Check connection status
-#         if not redis_manager.is_connected():
-#             # Handle connection failure
-#             print("Redis connection failed")

@@ -11,12 +11,12 @@ from redis_connection import RedisConnectionManager
 redis = RedisConnectionManager()
 
 class AttendanceSystem:
-    def __init__(self, resize_scale=0.5, tolerance=0.6, detection_cooldown=3, attendance_cooldown_hours=24):
+    def __init__(self, resize_scale=0.5, tolerance=0.5, detection_cooldown=3, attendance_cooldown_hours=24):
         """
         Advanced attendance system with Redis as database.
 
         :param resize_scale: Scale factor for image resizing (lower = faster processing)
-        :param tolerance: Face matching tolerance (lower = stricter matching) 06 is generally best
+        :param tolerance: Face matching tolerance (lower = stricter matching)
         :param detection_cooldown: Minimum time between user detections
         """
         self.redis_client = redis.get_redis_client() if redis else None

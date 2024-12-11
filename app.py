@@ -83,8 +83,8 @@ def register():
 
             # Register student
             result = reg_system.register_student(
-                name=request.form['name'],
-                reg_number=reg_number,
+                name=request.form['name'].capitalize(),
+                reg_number=reg_number.upper(),
                 major=request.form['major'],
                 image_path=filepath
             )
@@ -124,12 +124,12 @@ def student_detail(reg_number):
             f'uploads/{reg_number}.jpg',
             f'uploads/{reg_number}.jpeg',
             f'uploads/{reg_number}.png',
-            'uploads/default.png'
+            'images/default.png'
         ]
 
         # Find the first existing image
         image_path = next((path for path in image_paths if os.path.exists(os.path.join('static', path))),
-                          'uploads/default.png')
+                          'images/default.png')
 
         return render_template('student_detail.html', student=student, image_path=image_path)
     else:

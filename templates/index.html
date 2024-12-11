@@ -95,7 +95,7 @@
 
                     // Update user details
                     personName.textContent = data.user.name;
-                    personDetails.textContent = `Detected: ${data.user.name}`;
+                    personDetails.textContent = `Detected: ${data.user.id}`;
 
                     // Populate detailed information
                     regNumber.textContent = data.user.id;
@@ -127,6 +127,6 @@
     }
 
     // Update status every 2 seconds
-    setInterval(updateStatus, 2000);
+    setInterval(updateStatus, 1000);
 </script>
 {% endblock %}
