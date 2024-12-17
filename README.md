@@ -52,7 +52,6 @@ Follow the steps below to set up and run the Student Attendance System:
 ### Cloning the Repository
 First, clone the repository:
 ```bash
-# Clone the repository
 git clone https://github.com/peternelson22/face-recogition-system.git
 cd face-recogition-system
 ```
@@ -60,7 +59,6 @@ cd face-recogition-system
 ### Installing Dependencies
 Install the necessary Python libraries:
 ```bash
-# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -72,7 +70,6 @@ You can either run Redis using Docker (recommended) or install it manually.
 ## Running with Docker
 If Docker is installed, you can start Redis using the following steps:
 ```bash
-# Start Redis using Docker Compose
 docker-compose up
 ```
 
@@ -101,7 +98,6 @@ Ensure Redis is running before starting the app.
 ## Starting the Application
 Once Redis is running, start the application:
 ```bash
-# Start the Flask app
 python app.py
 ```
 The application will be accessible at:
